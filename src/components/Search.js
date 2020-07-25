@@ -3,7 +3,18 @@ import axios from 'axios';
 
 const Search = () => {
 	const [term, setTerm] = useState('programming');
+	const [debouncedTerm, setDebouncedTerm] = useState(term);
 	const [results, setResults] = useState([]);
+
+	useEffect(() => {
+		const timerId = setTimeout(() => {
+			setDebouncedTerm(term);
+		}, 1000);
+
+		return () => {
+			clearTimeout(timerId);
+		};
+	}, [term]);
 
 	useEffect(() => {
 		const search = async () => {
@@ -13,26 +24,52 @@ const Search = () => {
 					list: 'search',
 					origin: '*',
 					format: 'json',
-					srsearch: term,
+					srsearch: debouncedTerm,
 				},
 			});
 			setResults(data.query.search);
 		};
+		search();
+	}, [debouncedTerm]);
 
-		if (term && !results.length) {
-			search();
-		} else {
-			const timeoutId = setTimeout(() => {
-				if (term) {
-					search();
-				}
-			}, 1000);
+	/*
+		The useEffect below was showing a warning on the console because we used (results.length)
+		inside of it, and never passed inside the second argument (array), the problem with adding it
+		to the array is that when we first load our application we get a bug, that makes two api requests
+		instead of one, the first one happens when we first load the app, and the second after the request,
+		because the results.length changes, what ends up triggering the useEffect again,so we get rid of the
+		warning but end up creating a bug. The way to solve this is to create a helper State (debounced) and
+		use two different useEffects as you can see in the code above
+	*/
 
-			return () => {
-				clearTimeout(timeoutId);
-			};
-		}
-	}, [term]);
+	// useEffect(() => {
+	// 	const search = async () => {
+	// 		const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
+	// 			params: {
+	// 				action: 'query',
+	// 				list: 'search',
+	// 				origin: '*',
+	// 				format: 'json',
+	// 				srsearch: term,
+	// 			},
+	// 		});
+	// 		setResults(data.query.search);
+	// 	};
+
+	// 	if (term && !results.length) {
+	// 		search();
+	// 	} else {
+	// 		const timeoutId = setTimeout(() => {
+	// 			if (term) {
+	// 				search();
+	// 			}
+	// 		}, 1000);
+
+	// 		return () => {
+	// 			clearTimeout(timeoutId);
+	// 		};
+	// 	}
+	// }, [term, results.length]);
 
 	const renderedResults = results.map((result) => {
 		return (
