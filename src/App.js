@@ -1,8 +1,12 @@
 import React from 'react';
+// eslint-disable-next-line
 import Accordion from './components/Accordion';
+// eslint-disable-next-line
 import Search from './components/Search';
+import Dropdown from './components/Dropdown';
 import './styles/index.css';
 
+// eslint-disable-next-line
 const items = [
 	{
 		title: 'What is React?',
@@ -18,11 +22,27 @@ const items = [
 	},
 ];
 
+const options = [
+	{
+		label: 'The Color Red',
+		value: 'red',
+	},
+	{
+		label: 'The Color Green',
+		value: 'green',
+	},
+	{
+		label: 'A Shade of Blue',
+		value: 'blue',
+	},
+];
+
 export default () => {
 	return (
 		<div>
 			{/* <Accordion items={items}></Accordion> */}
-			<Search></Search>
+			{/* <Search></Search> */}
+			<Dropdown options={options} />
 		</div>
 	);
 };
