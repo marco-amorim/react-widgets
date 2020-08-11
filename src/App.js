@@ -5,6 +5,7 @@ import Accordion from './components/Accordion';
 import Search from './components/Search';
 import Dropdown from './components/Dropdown';
 import './styles/index.css';
+import Translate from './components/Translate';
 
 // eslint-disable-next-line
 const items = [
@@ -42,24 +43,9 @@ const options = [
 ];
 
 export default () => {
-	const [selected, setSelected] = useState(options[0]);
-	const [showDropdown, setShowDropdown] = useState(true);
-
 	return (
 		<div>
-			<button onClick={() => setShowDropdown(!showDropdown)}>
-				Toggle Dropdown
-			</button>
-			{/* <Accordion items={items}></Accordion> */}
-			{/* <Search></Search> */}
-
-			{showDropdown ? (
-				<Dropdown
-					selected={selected}
-					options={options}
-					onSelectedChange={setSelected}
-				/>
-			) : null}
+			<Translate />
 		</div>
 	);
 };
