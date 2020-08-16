@@ -53,6 +53,7 @@ const Dropdown = ({ options, selected, onSelectedChange, title }) => {
 					</div>
 				</div>
 			</div>
+			<h1 style={{ color: selected.value }}>Change my color!</h1>
 		</div>
 	);
 };
